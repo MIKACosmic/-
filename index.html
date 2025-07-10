@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧分享平台</title>
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary-orange: #f97316;
+            --primary-orange-hover: #ea580c;
+            --orange-50: #fff7ed;
+            --orange-100: #ffedd5;
+            --orange-200: #fed7aa;
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --orange-800: #9a3412;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --green-600: #059669;
+            --green-700: #047857;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--orange-50), #fef3c7);
+            min-height: 100vh;
+            padding-bottom: 100px;
+            color: var(--gray-800);
+        }
+
+        /* 头部样式 */
+        .header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid var(--orange-200);
+        }
+
+        .header-content {
+            padding: 1rem 1.5rem;
+        }
+
+        .header-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--orange-100);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, var(--orange-100), #fef3c7);
+            padding: 1.5rem;
+            border-radius: 0.875rem 0.875rem 0 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-orange);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-orange-hover);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--gray-600);
+            border: none;
+            padding: 1.5rem;
+        }
+
+        .btn-ghost:hover {
+            background: var(--orange-50);
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            padding: 1.5rem 1rem;
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 求助请求样式 */
+        .help-requests {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .help-request {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--gray-200);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .help-request:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-color: var(--orange-200);
+        }
+
+        .help-request.selected {
+            border-color: var(--orange-400);
+            background: var(--orange-50);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .help-request h4 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .help-request .meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            font-size: 1rem;
+        }
+
+        /* 输入区域样式 */
+        .input-section {
+            border-top: 2px solid var(--orange-100);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .textarea {
+            width: 100%;
+            min-height: 8rem;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.75rem;
+            font-family: inherit;
+            font-size: 1.125rem;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        .textarea:focus {
+            outline: none;
+            border-color: var(--orange-400);
+        }
+
+        /* AI总结样式 */
+        .summary-card {
+            margin-top: 1rem;
+            border: 2px solid var(--orange-200);
+            background: var(--orange-50);
+            border-radius: 0.75rem;
+            padding: 1rem;
+        }
+
+        .summary-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--orange-800);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--orange-800);
+            white-space: pre-wrap;
+            margin-bottom: 1rem;
+        }
+
+        .btn-send {
+            background: var(--green-600);
+            color: white;
+            width: 100%;
+            padding: 1rem;
+        }
+
+        .btn-send:hover {
+            background: var(--green-700);
+        }
+
+        /* 荣誉页面样式 */
+        .stats-dashboard {
+            background: linear-gradient(135deg, var(--orange-400), var(--primary-orange));
+            border-radius: 1rem;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .progress-section {
+            grid-column: 1 / -1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.75rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0.375rem;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 0.375rem;
+            width: 89%;
+        }
+
+        .honor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .honor-card {
+            background: white;
+            border: 2px solid var(--orange-100);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .honor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--orange-300);
+        }
+
+        .honor-icon {
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 0.75rem;
+            color: var(--primary-orange);
+        }
+
+        .honor-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .honor-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--orange-600);
+        }
+
+        /* 徽章样式 */
+        .badge-section {
+            margin-top: 1.5rem;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .badge-item {
+            text-align: center;
+        }
+
+        .badge-icon {
+            width: 4rem;
+            height: 4rem;
+            background: var(--orange-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.4);
+        }
+
+        .badge-icon svg {
+            width: 2rem;
+            height: 2rem;
+            color: var(--primary-orange);
+        }
+
+        .badge-label {
+            font-size: 1rem;
+            color: var(--gray-700);
+        }
+
+        /* 个人资料样式 */
+        .profile-header {
+            background: var(--orange-50);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .avatar {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 1rem;
+            background: var(--orange-200);
+            object-fit: cover; 
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-title {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+        }
+
+        .profile-actions {
+            padding: 1.5rem;
+        }
+
+        .status-card {
+            border: 2px solid var(--orange-100);
+            background: rgba(255, 247, 237, 0.5);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid var(--orange-200);
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-item:hover {
+            background: var(--orange-50);
+        }
+
+        .radio-item.selected {
+            border-color: var(--orange-400);
+            background: var(--orange-50);
+        }
+
+        .radio-item input {
+            margin-right: 0.75rem;
+        }
+
+        .radio-item label {
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .profile-btn {
+            width: 100%;
+            justify-content: flex-start;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-details {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255, 247, 237, 0.3);
+            border-left: 4px solid var(--orange-300);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--gray-700);
+        }
+
+        .btn-logout {
+            color: var(--red-600);
+        }
+
+        .btn-logout:hover {
+            background: #fef2f2;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 2px solid var(--orange-200);
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+            color: var(--gray-600);
+            height: 4rem;
+        }
+
+        .nav-btn.active {
+            background: var(--primary-orange);
+            color: white;
+        }
+
+        .nav-btn:not(.active):hover {
+            background: var(--orange-50);
+        }
+
+        .nav-icon {
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* --- 模态框(感谢信)样式修改 --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 24rem; /* 减小最大宽度 */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            position: relative;
+            background: var(--orange-50);
+            padding: 1.25rem; /* 减小内边距 */
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem; /* 减小标题字号 */
+            color: var(--orange-800);
+            margin-right: 2rem;
+        }
+
+        .modal-body {
+            padding: 1.25rem; /* 减小内边距 */
+            overflow-y: auto;
+            max-height: 65vh; /* 限制最大高度，使内容可滚动 */
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 8rem; /* 大幅减小图片高度 */
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem; /* 减小图片下边距 */
+        }
+
+        .letter-content {
+            font-size: 1rem; /* 减小内容字号 */
+            line-height: 1.6; /* 减小行高 */
+            color: var(--gray-700);
+        }
+
+        .letter-content p {
+            margin-bottom: 1rem;
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-style: italic;
+        }
+
+        /* 工具类 */
+        .hidden {
+            display: none !important;
+        }
+
+        .icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+        }
+
+        .icon-lg {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 1rem 0.5rem;
+            }
+            
+            .card-content {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                gap: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1 class="header-title">
+                <svg class="icon icon-lg" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.091zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/>
+                </svg>
+                智慧分享平台
+            </h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div id="wisdomTab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a7.5 7.5 0 01-7.5 0c-1.421 0-2.8 1.119-2.8 2.583a7.5 7.5 0 0014.998 0c0-1.411-1.379-2.583-2.8-2.583zM9 12a3 3 0 116 0 3 3 0 01-6 0z"/>
+                        </svg>
+                        智慧广场
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3 class="section-title">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <path d="M12 17h.01"/>
+                            </svg>
+                            求助邀请列表
+                        </h3>
+                        <div class="help-requests">
+                            <div class="help-request" onclick="selectRequest(this)">
+                                <h4>新生儿总是哭闹不睡觉怎么办？</h4>
+                                <div class="meta">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12,6 12,12 16,14"/>
+                                    </svg>
+                                    <span>1号妈妈 · 2小时前</span>
+                                </div>
+                            </div>
+                            <div class="help-request" onclick="selectRequest(this)">
+                                <h4>宝宝不肯吃辅食，只要喝奶怎么办？</h4>
+                                <div class="meta">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12,6 12,12 16,14"/>
+                                    </svg>
+                                    <span>2号妈妈 · 4小时前</span>
+                                </div>
+                            </div>
+                            <div class="help-request" onclick="selectRequest(this)">
+                                <h4>宝宝感冒什么时候才要去医院？</h4>
+                                <div class="meta">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12,6 12,12 16,14"/>
+                                    </svg>
+                                    <span>3号妈妈 · 5小时前</span>
+                                </div>
+                            </div>
+                            <div class="help-request" onclick="selectRequest(this)">
+                                <h4>宝宝不爱喝水怎么回事？</h4>
+                                <div class="meta">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12,6 12,12 16,14"/>
+                                    </svg>
+                                    <span>4号妈妈 · 8小时前</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-section">
+                        <h3 class="section-title">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                            </svg>
+                            输入您的智慧分享
+                        </h3>
+                        <textarea 
+                            id="shareInputText" 
+                            class="textarea" 
+                            placeholder="请在这里输入您宝贵的经验和建议..."
+                        ></textarea>
+                        <button id="getSummaryBtn" class="btn btn-primary" onclick="getAiSummary()">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.091z"/>
+                            </svg>
+                            获取AI总结
+                        </button>
+
+                        <div id="resultsSection" class="hidden">
+                            <div class="summary-card">
+                                <h4 class="summary-title">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                                    </svg>
+                                    AI总结结果
+                                </h4>
+                                <p id="summaryText" class="summary-content"></p>
+                                <button class="btn btn-send" onclick="sendShare()">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M22 2L11 13"/>
+                                        <polygon points="22,2 15,22 11,13 2,9"/>
+                                    </svg>
+                                    确认发送
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="honorTab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24">
+                            <path d="M6 9H4.5a2.5 2.5 0 010-5H6"/>
+                            <path d="M18 9h1.5a2.5 2.5 0 000-5H18"/>
+                            <path d="M4 22h16"/>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                            <path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+                        </svg>
+                        我的荣誉
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="stats-dashboard">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">助人次数</div>
+                                <div class="stat-number">89</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">智慧分享</div>
+                                <div class="stat-number">23</div>
+                            </div>
+                        </div>
+                        <div class="progress-section">
+                            <div class="stat-label">当前等级: 金牌导师</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <div style="font-size: 0.875rem; opacity: 0.9; margin-top: 0.5rem;">
+                                距离 白金导师 还差 11 次助人
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="honor-grid">
+                        <div class="honor-card" onclick="showLetterModal()">
+                            <svg class="honor-icon" viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <h3 class="honor-title">收到的感谢信</h3>
+                            <p class="honor-count">66 封</p>
+                        </div>
+                        <div class="honor-card">
+                            <svg class="honor-icon" viewBox="0 0 24 24">
+                                <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                            </svg>
+                            <h3 class="honor-title">我的智慧库</h3>
+                            <p class="honor-count">23 条</p>
+                        </div>
+                    </div>
+
+                    <div class="badge-section">
+                        <h3 class="section-title">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="7"/>
+                                <polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88"/>
+                            </svg>
+                            我的徽章
+                        </h3>
+                        <div class="badge-grid">
+                            <div class="badge-item">
+                                <div class="badge-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                                    </svg>
+                                </div>
+                                <p class="badge-label">首次分享</p>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                                    </svg>
+                                </div>
+                                <p class="badge-label">首次助人</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="profileTab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        我的
+                    </div>
+                </div>
+                <div class="card-content" style="padding: 0;">
+                    <div class="profile-header">
+                        <img class="avatar" src="images/aunt_wang.jpg" alt="王阿姨的头像">
+                        <h3 class="profile-name">王阿姨</h3>
+                        <p class="profile-title">40年教龄退休教师</p>
+                    </div>
+
+                    <div class="profile-actions">
+                        <div class="status-card">
+                            <h4 class="status-title">我的接单状态</h4>
+                            <div class="radio-group">
+                                <div class="radio-item selected" onclick="selectStatus(this, 'accepting')">
+                                    <input type="radio" name="orderStatus" value="accepting" checked>
+                                    <label>接受新邀请</label>
+                                </div>
+                                <div class="radio-item" onclick="selectStatus(this, 'resting')">
+                                    <input type="radio" name="orderStatus" value="resting">
+                                    <label>暂时休息</label>
+                                </div>
+                                <div class="radio-item" onclick="selectStatus(this, 'old_clients_only')">
+                                    <input type="radio" name="orderStatus" value="old_clients_only">
+                                    <label>仅服务老客户</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-ghost profile-btn" onclick="toggleProfileDetails()">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            个人信息
+                            <svg id="profileChevron" class="icon" viewBox="0 0 24 24" style="margin-left: auto;">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </button>
+
+                        <div id="profileDetailsSection" class="profile-details hidden">
+                            我想把这些用时光换来的经验，分享给像我女儿一样、正在经历这一切的年轻妈妈们。我可能不懂那些复杂的科学名词，但我懂一个母亲在深夜里的疲惫和担忧。
+                        </div>
+
+                        <button class="btn btn-ghost profile-btn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+                                <path d="M12 17h.01"/>
+                            </svg>
+                            帮助中心
+                        </button>
+
+                        <button class="btn btn-ghost profile-btn btn-logout">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+                                <polyline points="16,17 21,12 16,7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            退出登录
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('wisdom', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a7.5 7.5 0 01-7.5 0c-1.421 0-2.8 1.119-2.8 2.583a7.5 7.5 0 0014.998 0c0-1.411-1.379-2.583-2.8-2.583zM9 12a3 3 0 116 0 3 3 0 01-6 0z"/>
+            </svg>
+            <div class="nav-text">智慧广场</div>
+        </button>
+        <button class="nav-btn" onclick="switchTab('honor', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M6 9H4.5a2.5 2.5 0 010-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 000-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                <path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+            </svg>
+            <div class="nav-text">我的荣誉</div>
+        </button>
+        <button class="nav-btn" onclick="switchTab('profile', this)">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <div class="nav-text">我的</div>
+        </button>
+    </div>
+
+    <div id="letterModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeLetterModal()">×</button>
+                <h2 class="modal-title">一封感谢信</h2>
+            </div>
+            <div class="modal-body">
+                <img class="modal-image" src="images/baby_sleep.jpg" alt="宝宝安睡图">
+                <div class="letter-content">
+                    <p>亲爱的王阿姨：</p>
+                    <p>真的不知道该如何感谢您！宝宝最近每晚都哭闹，本来我都已经崩溃了，打算放弃。收到你的建议后我又抱着试试看的心态再次尝试，没想到真的有效！太感谢了！</p>
+                    <p class="letter-signature">一位终于睡了好觉的妈妈</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let selectedRequestId = null;
+        let isProcessing = false;
+
+        // 选择求助请求
+        function selectRequest(element) {
+            // 移除所有选中状态
+            document.querySelectorAll('.help-request').forEach(req => {
+                req.classList.remove('selected');
+            });
+            // 添加选中状态
+            element.classList.add('selected');
+        }
+
+        // 获取AI总结
+        async function getAiSummary() {
+            const inputText = document.getElementById('shareInputText').value;
+            const resultsSection = document.getElementById('resultsSection');
+            const summaryText = document.getElementById('summaryText');
+            const getSummaryBtn = document.getElementById('getSummaryBtn');
+
+            if (!inputText.trim()) {
+                alert('分享内容不能为空哦！');
+                return;
+            }
+
+            resultsSection.classList.remove('hidden');
+            summaryText.textContent = 'AI正在努力总结中，请稍候...';
+            getSummaryBtn.disabled = true;
+            getSummaryBtn.innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.091z"/>
+                </svg>
+                处理中...
+            `;
+            isProcessing = true;
+
+            try {
+                // 模拟API调用
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                const summary = `AI为您生成的分享总结：\n- 核心观点：${inputText.slice(0, 20)}...\n- 关键步骤：[自动提取]\n- 温馨提示：请根据宝宝实际情况调整。`;
+                summaryText.textContent = summary;
+            } catch (error) {
+                summaryText.textContent = '获取总结失败，请重试';
+            } finally {
+                getSummaryBtn.disabled = false;
+                getSummaryBtn.innerHTML = `
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.091z"/>
+                    </svg>
+                    重新获取AI总结
+                `;
+                isProcessing = false;
+            }
+        }
+
+        // 发送分享
+        function sendShare() {
+            alert('您的智慧分享已成功发送！');
+            document.getElementById('shareInputText').value = '';
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('summaryText').textContent = '';
+            document.getElementById('getSummaryBtn').innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.091z"/>
+                </svg>
+                获取AI总结
+            `;
+        }
+
+        // 切换标签页
+        function switchTab(tabName, buttonElement) {
+            // 隐藏所有标签页内容
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中的标签页
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // 更新导航按钮状态
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            buttonElement.classList.add('active');
+        }
+
+        // 显示感谢信模态框
+        function showLetterModal() {
+            document.getElementById('letterModal').classList.remove('hidden');
+        }
+
+        // 关闭感谢信模态框
+        function closeLetterModal() {
+            document.getElementById('letterModal').classList.add('hidden');
+        }
+
+        // 切换个人详情显示
+        function toggleProfileDetails() {
+            const details = document.getElementById('profileDetailsSection');
+            const chevron = document.getElementById('profileChevron');
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                chevron.innerHTML = '<polyline points="18,15 12,9 6,15"/>';
+            } else {
+                details.classList.add('hidden');
+                chevron.innerHTML = '<polyline points="6,9 12,15 18,9"/>';
+            }
+        }
+
+        // 选择接单状态
+        function selectStatus(element, value) {
+            // 移除所有选中状态
+            document.querySelectorAll('.radio-item').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('input').checked = false;
+            });
+            
+            // 添加选中状态
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+        }
+
+        // 点击模态框背景关闭
+        document.getElementById('letterModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLetterModal();
+            }
+        });
+    </script>
+</body>
+</html>
